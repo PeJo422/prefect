@@ -10,4 +10,4 @@ if __name__ == "__main__":
         schedule=CronSchedule(cron="0 0 * * *", timezone="UTC"),
         source=SOURCE_REPO,
         entrypoint="my_workflow.py:daily_jokes",  # your flow function
-    ).apply()
+    ).deploy()
