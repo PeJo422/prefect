@@ -1,13 +1,8 @@
-from prefect.deployments import Deployment
-from prefect.server.schemas.schedules import CronSchedule
-
-SOURCE_REPO = "https://github.com/PeJo422/prefect.git"
+from my_workflow import daily_jokes  # <- Import the flow directly
 
 if __name__ == "__main__":
-    Deployment.build_from_source(
+    daily_jokes.deploy(
         name="daily-joke-deployment",
         work_pool_name="my-work-pool",
-        schedule=CronSchedule(cron="0 0 * * *", timezone="UTC"),
-        source=SOURCE_REPO,
-        entrypoint="my_workflow.py:daily_jokes",  # your flow function
-    ).deploy()
+        cron="0 * * * *",  # Run every day at midnight
+    )
