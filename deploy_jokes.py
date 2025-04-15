@@ -1,5 +1,7 @@
 from prefect import flow
+from prefect_github.repository import GitHubRepository
 
+github_repository_block = GitHubRepository.load("git-pgdev")
 # Source for the code to deploy (here, a GitHub repo)
 SOURCE_REPO="https://github.com/PeJo422/prefect.git"
 
@@ -8,7 +10,8 @@ if __name__ == "__main__":
         source=SOURCE_REPO,
         entrypoint="daily_joke.py:upload_joke_to_db_flow", # Specific flow to run
     ).deploy(
-        name="my-first-deployment",
+        name="daily-joke-ingestion",
+        description="A flow to fetch and store a daily programming joke.",
         parameters={
             "github_repos": [
                 "prefect/daily_joke"
