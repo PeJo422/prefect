@@ -5,6 +5,8 @@ github_repository_block = GitHubRepository.load("git-pgdev")
 # Source for the code to deploy (here, a GitHub repo)
 SOURCE_REPO="https://github.com/PeJo422/prefect.git"
 
+print("🚀 Joke flow is starting...")
+
 if __name__ == "__main__":
     flow.from_source(
         source=SOURCE_REPO,
