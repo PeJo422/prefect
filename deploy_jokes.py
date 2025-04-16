@@ -14,7 +14,8 @@ if __name__ == "__main__":
         description="A flow to fetch and store a daily programming joke.",
         parameters={
             "github_repos": [
-                "prefect/daily_joke"
+                "PrefectHQ/prefect",
+                "pydantic/pydantic"
             ]
         },
         work_pool_name="my-work-pool",
