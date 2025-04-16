@@ -1,0 +1,7 @@
+prefect
+prefect-docker
+prefect_aws
+pandas
+boto3
+xgboost
+requests
