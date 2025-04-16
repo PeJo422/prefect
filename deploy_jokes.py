@@ -14,6 +14,6 @@ if __name__ == "__main__":
     ).deploy(
         name="daily-joke-ingestion",
         description="A flow to fetch and store a daily programming joke.",
-        work_pool_name="my-work-pool",
+        work_pool_name="pdev-workpool",
         cron="0 * * * *",  # Run every hour
     )
