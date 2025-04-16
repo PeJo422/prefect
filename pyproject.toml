@@ -1,0 +1,6 @@
+[project]
+name = "prefect-jokes"
+version = "0.1.0"
+
+[tool.setuptools]
+packages = ["utils", "flows"]

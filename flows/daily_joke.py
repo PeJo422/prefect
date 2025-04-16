@@ -1,18 +1,10 @@
 import requests
 import pandas as pd
 from prefect import flow, task
-from prefect.blocks.system import Secret
 from sqlalchemy import create_engine
 from datetime import datetime
-
-from prefect import flow, task
-from utils.postgres_db_connection import get_connection_string
-
-@task
-def connect_and_do_something():
-    conn_str = get_connection_string()
-    # Now use conn_str with SQLAlchemy or whatever
-
+from prefect.blocks.system import Secret
+from utils.postgres_db_connection import pg_connection_string
 
 @task
 def fetch_programming_joke():
@@ -20,9 +12,8 @@ def fetch_programming_joke():
     data = response.json()
 
     if data.get("error"):
-        raise ValueError("Joke API returned an error.")
+        raise ValueError("Joke API returned an error. Probably your luck too.")
 
-    # Flatten flags and add metadata
     joke_data = {
         "joke_id": data.get("id"),
         "category": data.get("category"),
@@ -38,18 +29,21 @@ def fetch_programming_joke():
 
     return joke_data
 
+
 @task
-def write_to_postgres(conn_str, joke_data):
+def write_to_postgres(joke_data):
+    conn_str = pg_connection_string()
     engine = create_engine(conn_str)
     df = pd.DataFrame([joke_data])
     df.to_sql("daily_jokes", engine, if_exists="append", index=False, schema="public")
     print(f"✅ Joke saved: {joke_data['joke']}")
 
+
 @flow
 def upload_joke_to_db_flow():
-    conn_str = get_connection_string()
-    joke_data = fetch_programming_joke()
-    write_to_postgres(conn_str, joke_data)
+    joke = fetch_programming_joke()
+    write_to_postgres(joke)
+
 
 if __name__ == "__main__":
     upload_joke_to_db_flow()
