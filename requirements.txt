@@ -2,4 +2,3 @@ prefect
 pandas
 requests
 sqlalchemy
-datetime

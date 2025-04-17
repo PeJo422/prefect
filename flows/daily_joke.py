@@ -4,7 +4,7 @@ from prefect import flow, task
 from sqlalchemy import create_engine
 from datetime import datetime
 from prefect.blocks.system import Secret
-from utils.postgres_db_connection import pg_connection_string
+from utils.postgres_db_connection import pg_connection_string  # Ensure this function is defined in your repo
 
 @task
 def fetch_programming_joke():
@@ -29,21 +29,21 @@ def fetch_programming_joke():
 
     return joke_data
 
-
 @task
 def write_to_postgres(joke_data):
-    conn_str = pg_connection_string()
+    # Get the Postgres connection string
+    conn_str = pg_connection_string()  # Ensure this function is available in your codebase
     engine = create_engine(conn_str)
+    
+    # Convert joke_data into DataFrame and write to Postgres
     df = pd.DataFrame([joke_data])
     df.to_sql("daily_jokes", engine, if_exists="append", index=False, schema="public")
     print(f"✅ Joke saved: {joke_data['joke']}")
 
-
 @flow
 def upload_joke_to_db_flow():
+    # Fetch the joke and write to DB
     joke = fetch_programming_joke()
     write_to_postgres(joke)
 
-
-if __name__ == "__main__":
-    upload_joke_to_db_flow()
+# No need for the __name__ block in Prefect flows
