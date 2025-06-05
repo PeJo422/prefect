@@ -11,5 +11,5 @@ if __name__ == "__main__":
         name="daily-joke-ingestion",
         description="A flow to fetch and store a daily programming joke.",
         work_pool_name="pdev-workpool",  # managed
-        cron="0 * * * *"
+        cron="* 0 * * *"
     )
